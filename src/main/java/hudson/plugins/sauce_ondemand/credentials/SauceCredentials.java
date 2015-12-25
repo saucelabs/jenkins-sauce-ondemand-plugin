@@ -125,6 +125,11 @@ public class SauceCredentials extends BaseStandardCredentials implements Standar
             SauceREST rest = new JenkinsSauceREST(username, apiKey);
             return "".equals(rest.getUser());
         }
+
+        @Override
+        public String getIconClassName() {
+            return "icon-sauce-ondemand-credential";
+        }
     }
 
     public final static DomainRequirement DOMAIN_REQUIREMENT = new HostnamePortRequirement("saucelabs.com", 80);

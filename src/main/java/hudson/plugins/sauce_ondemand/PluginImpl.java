@@ -35,6 +35,9 @@ import hudson.util.ListBoxModel;
 import hudson.util.Secret;
 import jenkins.model.Jenkins;
 import net.sf.json.JSONObject;
+import org.jenkins.ui.icon.Icon;
+import org.jenkins.ui.icon.IconSet;
+import org.jenkins.ui.icon.IconType;
 import org.kohsuke.stapler.AncestorInPath;
 import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.bind.JavaScriptMethod;
@@ -89,6 +92,36 @@ public class PluginImpl extends Plugin implements Describable<PluginImpl> {
 
     @Override
     public void start() throws Exception {
+        super.start();
+
+        // Register the small (16x16) icons...
+        IconSet.icons.addIcon(new Icon(
+            "icon-sauce-ondemand-credential",
+            "sauce-ondemand/images/16x16/credential.png",
+            Icon.ICON_SMALL_STYLE, IconType.PLUGIN)
+        );
+
+        // Register the medium (24x24) icons...
+        IconSet.icons.addIcon(new Icon(
+            "icon-sauce-ondemand-credential",
+            "sauce-ondemand/images/24x24/credential.png",
+            Icon.ICON_SMALL_STYLE, IconType.PLUGIN)
+        );
+
+        // Register the large (32x32) icons...
+        IconSet.icons.addIcon(new Icon(
+            "icon-sauce-ondemand-credential",
+            "sauce-ondemand/images/32x32/credential.png",
+            Icon.ICON_SMALL_STYLE, IconType.PLUGIN)
+        );
+
+        // Register the x-large (48x48) icons...
+        IconSet.icons.addIcon(new Icon(
+            "icon-sauce-ondemand-credential",
+            "sauce-ondemand/images/48x48/credential.png",
+            Icon.ICON_SMALL_STYLE, IconType.PLUGIN)
+        );
+
         JenkinsSauceREST.setPluginVersion(getWrapper().getVersion());
         // backward compatibility with the legacy class name
         Items.XSTREAM.alias("hudson.plugins.sauce_ondemand.SoDBuildWrapper", SauceOnDemandBuildWrapper.class);
