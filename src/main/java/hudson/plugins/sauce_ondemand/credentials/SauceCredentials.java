@@ -65,6 +65,11 @@ public class SauceCredentials extends BaseStandardCredentials implements Standar
 
     protected ShortLivedConfig shortLivedConfig;
 
+    public SauceCredentials(@CheckForNull CredentialsScope scope, @CheckForNull String id,
+                            @NonNull String username, @NonNull String apiKey, @CheckForNull String description) {
+        this(scope, id, username, apiKey, null, description);
+    }
+    
     @DataBoundConstructor
     public SauceCredentials(@CheckForNull CredentialsScope scope, @CheckForNull String id,
                             @NonNull String username, @NonNull String apiKey, @NonNull String restEndpoint, @CheckForNull String description) {
