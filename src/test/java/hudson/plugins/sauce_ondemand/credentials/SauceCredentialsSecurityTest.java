@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import jenkins.model.Jenkins;
 import org.htmlunit.HttpMethod;
-import org.htmlunit.Page;
 import org.htmlunit.WebRequest;
 import org.htmlunit.util.NameValuePair;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
@@ -124,9 +123,16 @@ public class SauceCredentialsSecurityTest {
         return new String[] {wrapperFillUrl(), sauceStepFillUrl(), sauceConnectStepFillUrl()};
     }
 
+    /**
+     * Requests a fill endpoint the way Jenkins itself does. Core's {@code select.js} fetches fill URLs
+     * with POST and a CSRF crumb, and the endpoints are annotated {@code @POST} to match, so a GET would
+     * be answered with 404 and prove nothing about permissions.
+     */
     private String fillAs(String user, String relativeUrl) throws Exception {
-        Page page = j.createWebClient().login(user).goTo(relativeUrl, "application/json");
-        return page.getWebResponse().getContentAsString();
+        JenkinsRule.WebClient wc = j.createWebClient().login(user);
+        WebRequest req = new WebRequest(new URL(j.getURL(), relativeUrl), HttpMethod.POST);
+        wc.addCrumb(req);
+        return wc.getPage(req).getWebResponse().getContentAsString();
     }
 
     private static void assertLeaksNothing(String url, String body, String globalId) {
@@ -202,6 +208,20 @@ public class SauceCredentialsSecurityTest {
         params.add(new NameValuePair("username", "some-user"));
         req.setRequestParameters(params);
         return wc.getPage(req).getWebResponse().getContentAsString();
+    }
+
+    @Test
+    public void fillEndpointsAreNotReachableViaGet() throws Exception {
+        // Assert the endpoint answers a POST first. A 404 on GET only means the verb was refused if the
+        // endpoint exists at all; if the plugin failed to load, everything 404s and this test would pass
+        // while proving nothing.
+        assertThat(fillAs("admin", ROOT_FILL_URL), containsString(globalId));
+
+        JenkinsRule.WebClient wc = j.createWebClient().login("admin");
+        wc.assertFails(ROOT_FILL_URL, 404);
+        for (String url : jobFillUrls()) {
+            wc.assertFails(url, 404);
+        }
     }
 
     @Test

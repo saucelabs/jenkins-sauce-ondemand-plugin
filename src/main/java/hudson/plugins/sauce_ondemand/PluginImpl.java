@@ -42,6 +42,7 @@ import org.jenkins.ui.icon.IconType;
 import org.kohsuke.stapler.AncestorInPath;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
+import org.kohsuke.stapler.verb.POST;
 
 /**
  * Persists the access credentials and common options for the Sauce plugin.
@@ -254,6 +255,7 @@ public class PluginImpl extends Plugin implements Describable<PluginImpl> {
      * @param credentialId the currently selected credentials id
      * @return the list of Sauce credentials the caller may choose from
      */
+    @POST
     public ListBoxModel doFillCredentialIdItems(
         @AncestorInPath Item item, @QueryParameter String credentialId) {
       return SauceCredentials.fillCredentialsIdItems(item, credentialId);

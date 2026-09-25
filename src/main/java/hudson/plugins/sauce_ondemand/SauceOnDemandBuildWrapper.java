@@ -74,6 +74,7 @@ import org.json.JSONException;
 import org.kohsuke.stapler.AncestorInPath;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
+import org.kohsuke.stapler.verb.POST;
 
 /**
  * {@link BuildWrapper} that sets up the Sauce OnDemand SSH tunnel and populates environment
@@ -1375,6 +1376,7 @@ public class SauceOnDemandBuildWrapper extends BuildWrapper implements Serializa
      * @param credentialId the currently selected credentials id
      * @return the list of Sauce credentials the caller may choose from
      */
+    @POST
     public ListBoxModel doFillCredentialIdItems(
         @AncestorInPath Item item, @QueryParameter String credentialId) {
       return SauceCredentials.fillCredentialsIdItems(item, credentialId);

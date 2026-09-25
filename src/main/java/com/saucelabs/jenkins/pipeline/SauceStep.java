@@ -27,6 +27,7 @@ import org.kohsuke.stapler.AncestorInPath;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.export.ExportedBean;
+import org.kohsuke.stapler.verb.POST;
 
 @ExportedBean
 public class SauceStep extends Step {
@@ -134,6 +135,7 @@ public class SauceStep extends Step {
          * context get the list; everybody else only gets the current value (SECURITY-3770).
          */
         @SuppressWarnings("unused") // used by stapler
+        @POST
         public ListBoxModel doFillCredentialsIdItems(@AncestorInPath Item item, @QueryParameter String credentialsId) {
             return SauceCredentials.fillCredentialsIdItems(item, credentialsId);
         }

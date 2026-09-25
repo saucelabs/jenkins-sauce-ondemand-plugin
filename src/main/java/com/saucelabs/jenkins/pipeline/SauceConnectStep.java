@@ -41,6 +41,7 @@ import org.kohsuke.stapler.AncestorInPath;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 import org.kohsuke.stapler.QueryParameter;
+import org.kohsuke.stapler.verb.POST;
 
 public class SauceConnectStep extends Step {
     private Boolean verboseLogging = false;
@@ -159,6 +160,7 @@ public class SauceConnectStep extends Step {
          * context get the list; everybody else only gets the current value (SECURITY-3770).
          */
         @SuppressWarnings("unused") // used by stapler
+        @POST
         public ListBoxModel doFillCredentialsIdItems(@AncestorInPath Item item, @QueryParameter String credentialsId) {
             return SauceCredentials.fillCredentialsIdItems(item, credentialsId);
         }
